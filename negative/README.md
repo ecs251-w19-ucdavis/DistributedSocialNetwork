@@ -1,0 +1,1 @@
+This is a function of word filter, the function is used to break the sentence into small pieces and rate with positive and negative, which finally give a score of the sentence represent the positive/negative of the sentence.
