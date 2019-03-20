@@ -1,0 +1,2 @@
+Files in archive.zip upload by Fatemeh, create a model of global mute word list, and a controller called global_mute_word_controller.
+Weijia make changes to the file /archive/app/controllers/global_mute_words_controller.rb. This change fix the bug that same word can be add to the list twice. When user trys to add a word that already exist in the list, cancel the request and tell that user the word has been added to the list by someone else.
