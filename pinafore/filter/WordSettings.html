@@ -1,0 +1,94 @@
+<form class="word-chooser" aria-label="Choose a word">
+  <div class="word-groups">
+    {#each wordGroups as wordGroup}
+    <div class="word-group">
+      {#each wordGroup.word as word}
+      <div class="word-picker">
+        <input type="radio" id="choice-word-{word.name}"
+               value={word.name} checked="$currentword === word.name"
+               bind:group="selectedWord">
+        <label class="word-picker-label" for="choice-word-{word.name}">
+        </label>
+      </div>
+      {/each}
+    </div>
+    {/each}
+  </div>
+</form>
+<style>
+  .word-chooser {
+    background: var(--form-bg);
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    display: block;
+    padding: 20px;
+    line-height: 2em;
+  }
+  .word-groups {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .word-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+  }
+  .word-picker {
+    display: flex;
+    align-items: center;
+  }
+  .word-picker-label {
+    display: flex;
+    align-items: center;
+  }
+  .word-picker-label-span {
+    margin: 2px 10px 0;
+  }
+
+  h3 {
+    font-size: 1.4em;
+  }
+
+  @media (max-width: 479px) {
+    .word-groups {
+      grid-template-columns: 1fr;
+    }
+
+    h3 {
+      margin-top: 0.5em;
+    }
+  }
+</style>
+<script>
+  import { store } from '../../../_store/store'
+  import { word } from '../../../_static/filter'
+
+  export default {
+    async oncreate () {
+      let { instanceName } = this.get()
+      let { instanceThemes } = this.store.get()
+      this.set({
+        selectedTheme: instanceThemes[instanceName] || DEFAULT_THEME
+      })
+    },
+    store: () => store,
+    data: () => ({
+      themes,
+      DEFAULT_THEME,
+      selectedTheme: DEFAULT_THEME
+    }),
+    computed: {
+      wordGroups: ({ word }) => ([
+        {
+          dark: false,
+          word: word.filter(_ => !_.dark)
+        },
+        {
+          dark: true,
+          word: word.filter(_ => _.dark)
+        }
+      ])
+    }
+  }
+</script>

@@ -1,0 +1,96 @@
+<!--
+filter folder
+//-->
+<SettingsLayout page='settings/filter/add' label="Add word">
+  <h1 id="add-a-word-h1">Add word</h1>
+
+  <form class="add-new-word" on:submit='onSubmit(event)' aria-labelledby="add-a-word-h1">
+
+    {#if !hasIndexedDB || !hasLocalStorage}
+      <div class="form-error form-error-user-error" role="alert">
+        It seems Pinafore cannot store data locally. Is your browser in private mode
+        or blocking cookies? Pinafore stores all data locally, and requires LocalStorage and
+        IndexedDB to work correctly.
+      </div>
+    {/if}
+
+    <label class="add-new-word-label" for="word">Filter:</label>
+    <input class="add-new-word-input" type="text" id="wordInput"
+           bind:value='$wordInSearch' placeholder="Enter word" required
+    >
+    <button class="primary add-new-word-button" type="submit" id="submitButton"
+            disabled={!$wordInSearch || $logInToInstanceLoading}>
+      Word include
+    </button>
+  </form>
+</SettingsLayout>
+<style>
+  .form-error {
+    border: 2px solid red;
+    border-radius: 2px;
+    padding: 10px;
+    font-size: 1.3em;
+    margin: 5px;
+    background-color: var(--main-bg);
+  }
+  .add-new-word-input {
+    min-width: 70%;
+    max-width: 100%;
+    background-color: var(--input-bg);
+  }
+
+  .add-new-word {
+    background: var(--form-bg);
+    padding: 5px 10px 15px;
+    margin: 20px auto;
+    border: 1px solid var(--form-border);
+    border-radius: 4px;
+  }
+
+  .add-new-word-label, .add-new-word-input, .add-new-word-button {
+    display: block;
+    margin: 20px 5px;
+  }
+
+  @media (max-width: 767px) {
+    .add-new-word-input {
+      min-width: 95%;
+    }
+  }
+
+</style>
+<script>
+  import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
+  import { store } from '../../../_store/store'
+  import { logInToInstance, handleOauthCode } from '../../../_actions/addInstance'
+  import ExternalLink from '../../../_components/ExternalLink.html'
+  import { testHasIndexedDB, testHasLocalStorage } from '../../../_utils/testStorage'
+
+  export default {
+    async oncreate () {
+      let codeMatch = location.search.match(/code=([^&]+)/)
+      if (codeMatch) {
+        return handleOauthCode(codeMatch[1])
+      }
+      this.set({
+        hasIndexedDB: await testHasIndexedDB(),
+        hasLocalStorage: testHasLocalStorage()
+      })
+    },
+    components: {
+      SettingsLayout,
+      ExternalLink
+    },
+    store: () => store,
+    data: () => ({
+      hasIndexedDB: true,
+      hasLocalStorage: true
+    }),
+    methods: {
+      onSubmit (event) {
+        event.preventDefault()
+        logInToInstance()
+      }
+    }
+  }
+</script>

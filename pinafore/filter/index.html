@@ -1,1 +1,43 @@
+<SettingsLayout page='settings/filter' label='word'>
+  <h1>Word:</h1>
+  <WordSettings 'test' />
+</SettingsLayout>
+<style>
+  .word-h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+<script>
+  import { store } from '../../../_store/store'
+  import SettingsLayout from '../../../_components/settings/SettingsLayout.html'
+  import SettingsList from '../../../_components/settings/SettingsList.html'
+  import SettingsListRow from '../../../_components/settings/SettingsListRow.html'
+  import SettingsListButton from '../../../_components/settings/SettingsListButton.html'
+  import WordSettings from './WordSettings.html'
+  import InstanceActions from '../../../_components/settings/instance/InstanceActions.html'
+  import { updateVerifyCredentialsForInstance } from '../../../_actions/instances'
 
+  export default {
+    async oncreate () {
+      let { instanceName } = this.get()
+      await updateVerifyCredentialsForInstance(instanceName)
+    },
+    store: () => store,
+    computed: {
+      instanceName: ({ params }) => params.instanceName,
+      verifyCredentials: ({ $verifyCredentials, instanceName }) => $verifyCredentials && $verifyCredentials[instanceName]
+    },
+    components: {
+      SettingsList,
+      SettingsLayout,
+      SettingsListRow,
+      SettingsListButton,
+      InstanceUserProfile,
+      PushNotificationSettings,
+      WordSettings,
+      InstanceActions
+    }
+  }
+</script>
