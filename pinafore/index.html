@@ -1,0 +1,37 @@
+<SettingsLayout page='settings' label="Settings">
+  <h1>Settings</h1>
+
+  <SettingsList>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/general" label="General"/>
+    </SettingsListRow>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/instances" label="Instances"/>
+    </SettingsListRow>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/hotkeys" label="Hotkeys"/>
+    </SettingsListRow>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/about" label="About Pinafore"/>
+    </SettingsListRow>
+    <SettingsListRow>
+      <SettingsListButton href="/settings/filter" label="Word Filter"/>
+    </SettingsListRow>
+  </SettingsList>
+
+</SettingsLayout>
+<script>
+  import SettingsLayout from '../../_components/settings/SettingsLayout.html'
+  import SettingsList from '../../_components/settings/SettingsList.html'
+  import SettingsListRow from '../../_components/settings/SettingsListRow.html'
+  import SettingsListButton from '../../_components/settings/SettingsListButton.html'
+
+  export default {
+    components: {
+      SettingsLayout,
+      SettingsList,
+      SettingsListRow,
+      SettingsListButton
+    }
+  }
+</script>
